@@ -2,6 +2,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const generateMarkdown = require("./generateMarkdown");
+const axios = require("axios");
 // TODO: Create an array of questions for user input
 const questions = [
   {
@@ -52,11 +53,6 @@ const questions = [
     name: "github",
     message: "Github Username:",
   },
-  {
-    type: "input",
-    name: "email",
-    message: "Enter your email address:",
-  },
 ];
 
 // TODO: Create a function to write README file
@@ -72,7 +68,21 @@ function writeToFile(fileName, data) {
 // TODO: Create a function to initialize app
 function init() {
   inquirer.prompt(questions).then(function (data) {
-    writeToFile("README.md", generateMarkdown(data));
+    const queryUrl = `https://api.github.com/users/${data.github}`;
+    axios
+      .get(queryUrl, {
+        headers: {
+          Authorization: `Bearer 48bde5da077e9b6ea538d95d9388e1bf0c0def4d`,
+        },
+      })
+      .then(function (response) {
+        const githubInfo = {
+          name: response.data.name,
+          profile: response.data.html_url,
+          email: response.data.email,
+        };
+        writeToFile("README.md", generateMarkdown(data, githubInfo));
+      });
   });
 }
 
