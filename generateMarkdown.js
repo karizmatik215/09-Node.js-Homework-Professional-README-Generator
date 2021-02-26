@@ -5,18 +5,19 @@ function renderLicenseBadge(data) {
   switch (data.license) {
     case "Apache 2.0":
       licenseBadge =
-        "![badge](https://img.shields.io/badge/License-Apache_2.0-blue)";
+        "![badge](https://img.shields.io/badge/License-Apache_2.0-blue?style=plastic)";
       break;
     case "GNU 3.0":
       licenseBadge =
-        "![badge](https://img.shields.io/badge/License-GNU_3.0-blue)";
+        "![badge](https://img.shields.io/badge/License-GNU_3.0-blue?style=plastic)";
       break;
     case "MIT":
-      licenseBadge = "![badge](https://img.shields.io/badge/License-MIT-blue)";
+      licenseBadge =
+        "![badge](https://img.shields.io/badge/License-MIT-blue?style=plastic)";
       break;
     case "Mozilla":
       licenseBadge =
-        "![badge](https://img.shields.io/badge/License-Mozilla-blue)";
+        "![badge](https://img.shields.io/badge/License-Mozilla-blue?style=plastic)";
       break;
     case "None":
       licenseBadge = "";
@@ -59,7 +60,7 @@ function renderLicenseSection(data) {
 }
 
 // TODO: Create a function to generate markdown for README
-function generateMarkdown(data) {
+function generateMarkdown(data, githubInfo) {
   //generates table of contents and adds elements with responses
   let tableOfContents = `\n### Table of Contents\n`;
 
@@ -78,13 +79,19 @@ function generateMarkdown(data) {
   if (data.license !== "None") {
     tableOfContents += `\n* [License](#license)\n`;
   }
-  //generates markdown template
+  if (data.github !== "") {
+    tableOfContents += `\n [Questions](#questions)\n`;
+  }
+  //variable storing markdown title and license. other elements added as needed
   let markdown = `# ${data.title}\n\n${renderLicenseBadge(data)}\n`;
-  //adds description to template
+
+  //adds description to markdown
   markdown += `\n## Description\n\n${data.description}\n`;
-  //adds table of contents to template
+
+  //adds table of contents to markdown
   markdown += tableOfContents;
-  //add each section to markdown template with a response
+
+  //add each section with a response to markdown
   if (data.installation) {
     markdown += `\n## Installation\n\n${data.installation}\n`;
   }
@@ -100,7 +107,12 @@ function generateMarkdown(data) {
   if (data.license !== "None") {
     markdown += `\n## License\n\nThis project is licensed under the ${
       data.license
-    } License.\n[Link](${renderLicenseLink(data)})\n`;
+    } License.\nClick [Link](${renderLicenseLink(
+      data
+    )}) for more information.\n`;
+  }
+  if (data.github) {
+    markdown += `\n## Questions\n\n${githubInfo.name}\n\n[Github Profile](${githubInfo.profile})\n\n${githubInfo.email}\n`;
   }
 
   return markdown;
