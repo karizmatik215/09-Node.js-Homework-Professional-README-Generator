@@ -18,6 +18,7 @@
   "homepage": "https://github.com/karizmatik215/09-Node.js-Homework-Professional-README-Generator#readme",
   "keywords": [],
   "dependencies": {
+    "axios": "^0.21.1",
     "inquirer": "^7.3.3"
   }
 }
