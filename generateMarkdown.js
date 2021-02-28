@@ -70,8 +70,8 @@ function generateMarkdown(data, githubInfo) {
   if (data.usage !== "") {
     tableOfContents += `\n* [Usage](#usage)\n`;
   }
-  if (data.collaborators !== "") {
-    tableOfContents += `\n* [Collaborators](#collaborators)\n`;
+  if (data.contributing !== "") {
+    tableOfContents += `\n* [Contributing](#Contributing)\n`;
   }
   if (data.test !== "") {
     tableOfContents += `\n* [Tests](#tests)\n`;
@@ -80,7 +80,7 @@ function generateMarkdown(data, githubInfo) {
     tableOfContents += `\n* [License](#license)\n`;
   }
   if (data.github !== "") {
-    tableOfContents += `\n [Questions](#questions)\n`;
+    tableOfContents += `\n* [Questions](#questions)\n`;
   }
   //variable storing markdown title and license. other elements added as needed
   let markdown = `# ${data.title}\n\n${renderLicenseBadge(data)}\n`;
@@ -98,8 +98,8 @@ function generateMarkdown(data, githubInfo) {
   if (data.usage) {
     markdown += `\n## Usage\n\n${data.usage}\n`;
   }
-  if (data.collaborators) {
-    markdown += `\n## Collaborators\n\n${data.collaborators}\n`;
+  if (data.contributing) {
+    markdown += `\n## Contributing\n\n${data.contributing}\n`;
   }
   if (data.test) {
     markdown += `\n## Tests\n\n${data.test}\n`;
@@ -112,7 +112,7 @@ function generateMarkdown(data, githubInfo) {
     )}) for more information.\n`;
   }
   if (data.github) {
-    markdown += `\n## Questions\n\n${githubInfo.name}\n\n[Github Profile](${githubInfo.profile})\n\n${githubInfo.email}\n`;
+    markdown += `\n## Questions\n\n${githubInfo.name}\n\n[Github Profile](${githubInfo.profile})\n\n${data.email}\n`;
   }
 
   return markdown;
