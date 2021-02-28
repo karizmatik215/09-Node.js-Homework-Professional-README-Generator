@@ -3,6 +3,7 @@ const inquirer = require("inquirer");
 const fs = require("fs");
 const generateMarkdown = require("./generateMarkdown");
 const axios = require("axios");
+
 // TODO: Create an array of questions for user input
 const questions = [
   {
@@ -26,14 +27,14 @@ const questions = [
   {
     type: "input",
     name: "usage",
-    message: "Provide instructions and examples for use:",
-    default: "Usage",
+    message: "Provide instructions for use:",
+    default: "Usage Information",
   },
   {
     type: "input",
-    name: "collaborators",
-    message: "List your collaborators:",
-    default: "Collaborators",
+    name: "contributing",
+    message: "Contribution Guidelines:",
+    default: "Contributing Guidelines",
   },
   {
     type: "input",
@@ -52,6 +53,23 @@ const questions = [
     type: "input",
     name: "github",
     message: "Github Username:",
+    default: "karizmatik215",
+  },
+  {
+    type: "input",
+    name: "email",
+    message: "Enter email address",
+    default: "juan.sanchez@phila.gov",
+    validate: function (email) {
+      valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+      if (valid) {
+        return true;
+      } else {
+        console.log(".  Please enter a valid email");
+        return false;
+      }
+    },
   },
 ];
 
@@ -69,20 +87,13 @@ function writeToFile(fileName, data) {
 function init() {
   inquirer.prompt(questions).then(function (data) {
     const queryUrl = `https://api.github.com/users/${data.github}`;
-    axios
-      .get(queryUrl, {
-        headers: {
-          Authorization: `Bearer 48bde5da077e9b6ea538d95d9388e1bf0c0def4d`,
-        },
-      })
-      .then(function (response) {
-        const githubInfo = {
-          name: response.data.name,
-          profile: response.data.html_url,
-          email: response.data.email,
-        };
-        writeToFile("README.md", generateMarkdown(data, githubInfo));
-      });
+    axios.get(queryUrl).then(function (response) {
+      const githubInfo = {
+        name: response.data.name,
+        profile: response.data.html_url,
+      };
+      writeToFile("README.md", generateMarkdown(data, githubInfo));
+    });
   });
 }
 
